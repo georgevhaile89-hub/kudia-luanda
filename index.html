@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087c5b">
+  <title>KudIA — teu assistente para Luanda</title>
+  <style>
+    :root{
+      --green:#087c5b;--dark:#064c3a;--light:#e9fff6;
+      --bg:#f4f8f6;--ink:#17221e;--muted:#68756f;
+      --yellow:#f9d765;--white:#fff
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:linear-gradient(140deg,#ddf8ec,#f8f5e9 55%,#e9f6f1);
+      color:var(--ink);font-family:Arial,sans-serif
+    }
+    .app{
+      width:min(100%,720px);min-height:100vh;margin:auto;background:#ffffffcf;
+      display:flex;flex-direction:column;box-shadow:0 0 30px #064c3a22
+    }
+    header{
+      padding:23px 18px 18px;color:#fff;
+      background:linear-gradient(135deg,var(--dark),var(--green))
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:48px;height:48px;border-radius:16px;display:grid;place-items:center;
+      background:#ffffff22;font-size:25px
+    }
+    h1{margin:0;font-size:1.45rem}
+    header p{margin:4px 0 0;color:#dcfff2;font-size:.9rem}
+    .online{
+      display:inline-block;margin-top:14px;padding:7px 10px;border-radius:999px;
+      background:#ffffff22;font-size:.78rem
+    }
+    main{flex:1;padding:14px 14px 8px;display:flex;flex-direction:column;gap:12px}
+    .notice{
+      color:#624e10;background:#fff8d9;border:1px solid #e8d48b;
+      border-radius:12px;padding:10px;font-size:.78rem;line-height:1.4
+    }
+    .quick{
+      display:flex;gap:8px;overflow-x:auto;padding:2px 0 5px;scrollbar-width:none
+    }
+    .quick button{
+      flex:0 0 auto;border:1px solid #b9e7d5;background:#f0fff8;color:var(--dark);
+      border-radius:999px;padding:9px 12px;font-weight:bold;font-size:.82rem
+    }
+    #chat{
+      flex:1;min-height:300px;max-height:52vh;overflow-y:auto;
+      display:flex;flex-direction:column;gap:10px;padding:3px 1px 8px
+    }
+    .row{display:flex;gap:8px;max-width:91%;align-items:flex-end}
+    .bot{align-self:flex-start}
+    .user{align-self:flex-end;flex-direction:row-reverse}
+    .avatar{
+      width:31px;height:31px;flex:0 0 31px;border-radius:50%;display:grid;
+      place-items:center;background:#dcf8ed
+    }
+    .user .avatar{background:#fff0b7}
+    .bubble{
+      padding:11px 13px;border-radius:16px;line-height:1.42;font-size:.92rem;
+      white-space:pre-line;box-shadow:0 3px 9px #11352912
+    }
+    .bot .bubble{background:#fff;border-bottom-left-radius:4px}
+    .user .bubble{background:var(--green);color:#fff;border-bottom-right-radius:4px}
+    #typing{
+      display:none;align-self:flex-start;background:#fff;color:var(--muted);
+      border-radius:14px;padding:9px 12px;font-size:.82rem
+    }
+    #typing.show{display:block}
+    form{display:flex;gap:8px;padding:3px 0}
+    input{
+      width:100%;min-width:0;border:1px solid #c7d8d0;border-radius:15px;
+      padding:14px;font-size:1rem;outline:none;background:#fff
+    }
+    input:focus{border-color:var(--green);box-shadow:0 0 0 3px #087c5b1c}
+    #send{
+      min-width:55px;border:0;border-radius:15px;background:var(--green);
+      color:#fff;font-size:1.15rem
+    }
+    footer{text-align:center;padding:12px 18px 20px;color:var(--muted);font-size:.76rem}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="logo">🇦🇴</div>
+      <div><h1>KudIA</h1><p>Teu assistente prático para Luanda</p></div>
+    </div>
+    <span class="online">● KudIA está online</span>
+  </header>
+
+  <main>
+    <div class="notice">ℹ️ MVP em teste. Informações e preços são indicativos: confirma sempre no local. O KudIA informa, mas não substitui profissionais de saúde.</div>
+
+    <div class="quick">
+      <button data-q="Quanto está a gasolina?">⛽ Gasolina</button>
+      <button data-q="Frutas e peixe">🍌 Frutas e peixe</button>
+      <button data-q="Promoções">🏷️ Promoções</button>
+      <button data-q="Transportes">🚕 Transporte</button>
+      <button data-q="Treino em casa">💪🏾 Treinos</button>
+      <button data-q="Saúde mental">🧠 Bem-estar</button>
+    </div>
+
+    <section id="chat">
+      <div class="row bot">
+        <div class="avatar">🤖</div>
+        <div class="bubble">Olá! Sou o KudIA 👋🏾
+
+Posso ajudar-te com mercado, preços, transporte, treinos e bem-estar em Luanda.
+
+O que precisas hoje?</div>
+      </div>
+    </section>
+
+    <div id="typing">🤖 KudIA está a escrever…</div>
+
+    <form id="form">
+      <input id="input" placeholder="Escreve a tua pergunta..." autocomplete="off">
+      <button id="send" type="submit">➤</button>
+    </form>
+  </main>
+  <footer>KudIA MVP — em teste em Luanda 🇦🇴</footer>
+</div>
+
+<script>
+const chat=document.querySelector("#chat");
+const input=document.querySelector("#input");
+const form=document.querySelector("#form");
+const typing=document.querySelector("#typing");
+
+function norm(t){
+  return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+}
+
+function answer(msg){
+  const t=norm(msg);
+
+  if(/ola|bom dia|boa tarde|boa noite|hello/.test(t))
+    return "Olá! 👋🏾 Sou o KudIA. Posso ajudar com mercado, transporte, treinos, saúde e bem-estar. O que queres saber?";
+
+  if(/gasolina|combustivel|gasoleo|posto/.test(t))
+    return "⛽ Os preços e a disponibilidade de combustível podem mudar. Confirma no posto antes de sair.
+
+Diz-me a tua zona — Hoji ya Henda, Cazenga, Maianga, Viana ou Talatona — para eu ajudar-te a organizar a procura.";
+
+  if(/fruta|banana|manga|laranja|abacate|peixe|carapau|cacusso|tilapia/.test(t))
+    return "🍌🐟 Frutas e peixe
+
+Para fruta, escolhe produtos firmes, sem cheiro estranho ou partes muito moles. Para peixe, procura olhos brilhantes, carne firme e cheiro leve — nunca cheiro forte.
+
+Os preços variam por mercado, zona e dia. Confirma antes de comprar.";
+
+  if(/promoc|loja|desconto|oferta/.test(t))
+    return "🏷️ Promoções
+
+O KudIA ainda não tem promoções verificadas ao vivo. Se encontrares uma, envia:
+• produto e tamanho
+• preço em Kz
+• loja/mercado
+• zona
+• data
+
+Assim vamos construir informação útil para a comunidade.";
+
+  if(/taxi|uber|candongueiro|transporte|rota|ir para/.test(t))
+    return "🚕 Transporte em Luanda
+
+Compara táxi por aplicativo, táxi convencional e candongueiro conforme preço, horário e segurança. Confirma preço e rota antes de sair.
+
+Diz-me: de onde sais, para onde vais e a que horas?";
+
+  if(/treino|ginasio|academia|exercicio|emagrecer|massa|flexao|agachamento/.test(t))
+    return "💪🏾 Treino simples em casa
+
+Faz 3 voltas, 3 vezes por semana:
+1. Caminhar no lugar — 1 minuto
+2. Agachamentos — 10 repetições
+3. Flexões na parede — 8 repetições
+4. Ponte de glúteos — 10 repetições
+5. Descanso — 45 segundos
+
+Pára se sentires dor forte, tontura, dor no peito ou falta de ar fora do normal.";
+
+  if(/saude mental|ansiedade|stress|estresse|triste|depress|sozinh|nao aguento|nao quero viver|matar/.test(t)){
+    if(/nao aguento|nao quero viver|matar|suicid/.test(t))
+      return "Sinto muito que estejas a passar por isso. A tua segurança é importante agora.
+
+Por favor não fiques sozinho/a: fala já com alguém de confiança que esteja perto, familiar, amigo ou vizinho, e procura urgência/hospital local. Afasta-te de qualquer coisa que possas usar para te magoar.
+
+Estás em segurança agora?";
+    return "🧠 Lamento que estejas a sentir isso. Vamos fazer uma pausa: inspira por 4 segundos, segura 2 e expira por 6. Repete 5 vezes.
+
+Se puderes, fala hoje com alguém de confiança. O KudIA informa, mas não substitui psicólogo ou médico.";
+  }
+
+  if(/saude|hospital|medico|remedio|farmacia|dor|doente/.test(t))
+    return "🏥 Para sintomas ou medicamentos, procura uma farmácia, enfermeiro, clínica ou hospital próximo. Em urgência, procura atendimento presencial imediatamente.
+
+Não faço diagnóstico nem substituo profissional de saúde. Diz-me a tua zona e posso ajudar-te a organizar o que precisas procurar.";
+
+  if(/preco|arroz|frango|oleo|mercado|comprar|quanto custa/.test(t))
+    return "💰 Preços e mercado
+
+Compara em mais de uma loja/mercado e pergunta sempre pela quantidade: 1 kg, 5 kg, 1 litro etc.
+
+Os valores mudam, por isso o KudIA não apresenta preços como garantidos. Que produto procuras e em que zona?";
+
+  if(/obrigad|valeu|tchau|adeus/.test(t))
+    return "De nada! 🙏🏾 Obrigado por testar o KudIA. Diz-me depois o que faltou e se usarias isto no dia a dia.";
+
+  return "Ainda estou em teste, mas posso ajudar com:
+
+⛽ combustível
+🍌 frutas e peixe
+🏷️ promoções
+🚕 transporte
+💪🏾 treinos
+🧠 bem-estar
+
+Experimenta uma pergunta ou toca num botão acima.";
+}
+
+function add(text,role){
+  const row=document.createElement("div");
+  row.className="row "+role;
+  const avatar=document.createElement("div");
+  avatar.className="avatar";
+  avatar.textContent=role==="bot"?"🤖":"👤";
+  const bubble=document.createElement("div");
+  bubble.className="bubble";
+  bubble.textContent=text;
+  row.append(avatar,bubble);
+  chat.appendChild(row);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function send(text){
+  const clean=text.trim();
+  if(!clean)return;
+  add(clean,"user");
+  input.value="";
+  typing.classList.add("show");
+  setTimeout(()=>{
+    typing.classList.remove("show");
+    add(answer(clean),"bot");
+  },650);
+}
+
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  send(input.value);
+});
+
+document.querySelectorAll("[data-q]").forEach(b=>{
+  b.addEventListener("click",()=>send(b.dataset.q));
+});
+</script>
+</body>
+</html>
