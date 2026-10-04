@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GecIA 🇦🇴</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298,#FF8C00);color:#fff;min-height:100vh;padding:20px}
+.app{max-width:700px;margin:0 auto}
+h1{color:#FFD700;text-align:center;margin-bottom:10px;font-size:42px;font-weight:900}
+.flag{font-size:38px;margin-left:10px}
+.subtitle{text-align:center;color:#fff;font-size:16px;margin-bottom:8px;font-weight:600}
+.author{text-align:center;color:#FFD700;font-size:14px;margin-bottom:30px;font-style:italic;font-weight:700}
+#chat{background:rgba(0,0,0,0.7);border-radius:25px;padding:30px;min-height:600px;margin-bottom:25px;border:3px solid rgba(255,255,255,0.2)}
+.msg{margin:20px 0;padding:20px;border-radius:20px;max-width:85%;line-height:1.9}
+.user{background:linear-gradient(135deg,#FF8C00,#FFA500);color:#000;float:right;clear:both;font-weight:700}
+.ai{background:linear-gradient(135deg,#2E8B57,#006400);color:#fff;clear:both;border-left:5px solid #FFD700}
+b{color:#FFD700;font-weight:800}
+ul{margin:15px 0;padding-left:25px}
+li{margin:10px 0}
+.q{display:inline-block;padding:13px 22px;margin:8px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:28px;font-size:14px;cursor:pointer;font-weight:600;color:#fff}
+#inp{width:75%;padding:18px;border-radius:30px;border:2px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-size:16px;outline:none}
+#btn{width:22%;padding:18px;border-radius:30px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>GecIA<span class="flag">🇦🇴</span></h1>
+<div class="subtitle">Aprende, cria e constrói o teu futuro</div>
+<div class="author">Criado por George Waldir Ventura</div>
+<div id="chat"></div>
+<div style="text-align:center">
+<span class="q" onclick="ask('Frase do dia')">💭 Frase</span>
+<span class="q" onclick="ask('Receitas')">🍳 Receitas</span>
+<span class="q" onclick="ask('Ensinar filhos')">👨‍👩‍👧‍👦 Educação</span>
+<span class="q" onclick="ask('Inglês')">🌐 Inglês</span>
+<span class="q" onclick="ask('Províncias')">🇦🇴 Angola</span>
+</div>
+<div style="text-align:center;margin-top:20px">
+<input type="text" id="inp" placeholder="Escreve a tua pergunta...">
+<button id="btn" onclick="send()">Enviar</button>
+</div>
+</div>
+<script>
+const c=document.getElementById('chat');
+function add(t,u){const d=document.createElement('div');d.className='msg '+(u?'user':'ai');d.innerHTML=t;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function n(t){return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();}
+function r(t){const v=n(t);
+if(v.includes('frase')||v.includes('motivacao')){return '<b>💭 FRASE DO DIA</b><br><br>"O sucesso é a soma de pequenos esforços repetidos dia após dia."';}
+if(v.includes('receita')||v.includes('culinaria')||v.includes('comida')){return '<b>🍳 RECEITAS</b><br><br><b>MUAMBA DE GALINHA</b><br>Ingredientes: 1 galinha, 200ml óleo de palma, 1 cebola, 3 dentes de alho, 2 tomates<br>Preparação: Tempere, frite, cozinhe 30-40 min.<br><br><b>FUNGE</b><br>Ingredientes: 500g farinha de bombó, 1L água<br>Preparação: Ferva água, adicione farinha, mexa.<br><br><b>CALULU</b><br>Ingredientes: 1kg peixe, 2 tomates, 1 cebola, óleo de palma<br>Preparação: Frite peixe, cozinhe vegetais, junta tudo.';}
+if(v.includes('ensinar filhos')||v.includes('educar')||v.includes('criancas')){return '<b>👨‍👩‍👧‍👦 ENSINAR FILHOS</b><br><br>1. Cria rotina<br>2. Torna divertido<br>3. Usa jogos<br>4. Lê todos os dias<br>5. Pratica inglês com desenhos e músicas';}
+if(v.includes('ingles')||v.includes('english')){return '<b>🌐 INGLÊS</b><br><br>Hello=Olá, Good morning=Bom dia, How are you?=Como estás?, I am fine=Estou bem, Thank you=Obrigado<br><br>Números: One, Two, Three, Four, Five<br><br>Cores: Red, Blue, Green, Yellow, Black, White';}
+if(v.includes('provincia')||v.includes('províncias')){return '<b>🇦🇴 PROVÍNCIAS (18)</b><br><br>Luanda, Benguela, Huíla, Huambo, Cabinda, Namibe, Malanje, Kwanza Sul, Kwanza Norte, Uíge, Zaire, Bié, Cuando Cubango, Cunene, Lunda Norte, Lunda Sul, Moxico, Bengo';}
+if(v.includes('lubango')||v.includes('huila')){return '<b>🇦🇴 HUÍLA</b><br><br>Capital: Lubango<br>População: ~2.5 milhões<br>Turismo: Serra da Leba, Cristo Rei, Fenda da Tundavala';}
+if(v.includes('benguela')){return '<b>🇦🇴 BENGUELA</b><br><br>Fundada: 1617<br>Praias: Morena, Caó, Baía Farta';}
+if(v.includes('luanda')){return '<b>🇦🇴 LUANDA</b><br><br>Capital, ~8 milhões<br>Turismo: Fortaleza, Ilha do Cabo, Museu';}
+if(v.includes('cabinda')){return '<b>🇦🇴 CABINDA</b><br><br>Petróleo, Praias: Lândana, Bungo';}
+if(v.includes('huambo')){return '<b>🇦🇴 HUAMBO</b><br><br>Centro, 1700m altitude';}
+if(v.includes('malanje')){return '<b>🇦🇴 MALANJE</b><br><br>Quedas de Kalandula, Pungo Andongo';}
+if(v.includes('namibe')||v.includes('mocamedes')){return '<b>🇦🇴 NAMIBE</b><br><br>Deserto do Namibe, Praia da Sangia';}
+if(v.includes('londres')||v.includes('london')||v.includes('inglaterra')){return '<b>🇬🇧 LONDRES</b><br><br>Capital do Reino Unido<br>Turismo: Big Ben, Torre de Londres, Buckingham Palace';}
+if(v.includes('herero')){return '<b>👥 HERERO</b><br><br>Namíbia, Sul de Angola<br>Pastores de gado';}
+if(v.includes('khoisan')||v.includes('koisan')||v.includes('san')){return '<b>👥 KHOISAN</b><br><br>Kalahari<br>Povos mais antigos<br>Língua com cliques';}
+if(v.includes('clima')||v.includes('temperatura')){return '<b>🌤️ CLIMA</b><br><br>Tropical (Norte): 22-30°C<br>Temperado (Centro-Sul): 15-25°C<br>Desértico (Sul): 20-35°C';}
+if(v.includes('historia')&&v.includes('angola')){return '<b>🇦🇴 HISTÓRIA</b><br><br>Pré-colonial: Reinos Congo, Ndongo, Matamba<br>Colonização: 1483-1961<br>Independência: 11 Nov 1975<br>Guerra Civil: 1975-2002';}
+if(v.includes('angola')){return '<b>🇦🇴 ANGOLA</b><br><br>Capital: Luanda<br>População: ~35 milhões<br>Independência: 11 Nov 1975<br>Províncias: 18';}
+if(v.includes('negocio')||v.includes('ideia')){return '<b>💡 NEGÓCIOS</b><br><br>1. Entregas: 500-1000 Kz<br>2. Revenda: 30-50% lucro<br>3. Digital: Chatbots';}
+if(v.includes('programacao')||v.includes('codigo')){return '<b>💻 PROGRAMAÇÃO</b><br><br>HTML, CSS, JavaScript, Python, Node.js';}
+if(v.includes('ola')||v.includes('oi')){return '<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>Posso ajudar com frases, receitas, educação, inglês, Angola.';}
+if(v.includes('obrigado')||v.includes('valeu')){return '<b>💙 Sempre!</b> 🇦🇴';}
+if(v.includes('adeus')||v.includes('tchau')){return '<b>👋 Até logo!</b> 🇦🇴';}
+return '<b>🤔 Interessante!</b><br><br>Posso ajudar com frases, receitas, educação, inglês, Angola, história, povos, clima, negócios e programação.';}
+function ask(t){add(t,1);setTimeout(()=>add(r(t),0),400);}
+function send(){const v=document.getElementById('inp').value;if(!v.trim())return;ask(v);document.getElementById('inp').value='';}
+add('<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>Aprende, cria e constrói o teu futuro.<br><br><b>Criado por George Waldir Ventura</b><br><br>O que queres aprender?',0);
+</script>
+</body>
+</html>
