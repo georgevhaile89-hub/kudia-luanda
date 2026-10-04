@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GecIA 🇦🇴</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298,#FF8C00);color:#fff;min-height:100vh;padding:20px}
+.app{max-width:650px;margin:0 auto}
+h1{color:#FFD700;text-align:center;margin-bottom:10px;font-size:42px;font-weight:900;text-shadow:0 0 25px rgba(255,215,0,0.6)}
+.flag{font-size:38px;margin-left:10px}
+.subtitle{text-align:center;color:#fff;font-size:16px;margin-bottom:8px;font-weight:600}
+.author{text-align:center;color:#FFD700;font-size:14px;margin-bottom:30px;font-style:italic;font-weight:700}
+#chat{background:rgba(0,0,0,0.7);border-radius:25px;padding:30px;min-height:550px;margin-bottom:25px;border:3px solid rgba(255,255,255,0.2)}
+.msg{margin:20px 0;padding:20px;border-radius:20px;max-width:85%;line-height:1.9}
+.user{background:linear-gradient(135deg,#FF8C00,#FFA500);color:#000;float:right;clear:both;font-weight:700}
+.ai{background:linear-gradient(135deg,#2E8B57,#006400);color:#fff;clear:both;border-left:5px solid #FFD700}
+b{color:#FFD700;font-weight:800}
+ul{margin:15px 0;padding-left:25px}
+li{margin:10px 0}
+.q{display:inline-block;padding:13px 22px;margin:8px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:28px;font-size:14px;cursor:pointer;font-weight:600;color:#fff}
+#inp{width:75%;padding:18px;border-radius:30px;border:2px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.1);color:#fff;font-size:16px;outline:none}
+#btn{width:22%;padding:18px;border-radius:30px;border:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-weight:800;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>GecIA<span class="flag">🇦🇴</span></h1>
+<div class="subtitle">Aprende, cria e constrói o teu futuro</div>
+<div class="author">Criado por George Waldir Ventura</div>
+<div id="chat"></div>
+<div style="text-align:center">
+<span class="q" onclick="ask('Inglês')">🌐 Inglês</span>
+<span class="q" onclick="ask('Províncias de Angola')">🇦🇴 Províncias</span>
+<span class="q" onclick="ask('História de Angola')">📚 História</span>
+<span class="q" onclick="ask('Londres')">🇬🇧 Londres</span>
+</div>
+<div style="text-align:center;margin-top:20px">
+<input type="text" id="inp" placeholder="Escreve a tua pergunta...">
+<button id="btn" onclick="send()">Enviar</button>
+</div>
+</div>
+<script>
+const c=document.getElementById('chat');
+function add(t,u){const d=document.createElement('div');d.className='msg '+(u?'user':'ai');d.innerHTML=t;c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function n(t){return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();}
+function r(t){const v=n(t);
+
+// PROVÍNCIAS DE ANGOLA
+if(v.includes('provincia')||v.includes('províncias')||v.includes('quantas provincias')||v.includes('lista de provincias')||v.includes('nome das provincias')){
+return '<b>🇦🇴 PROVÍNCIAS DE ANGOLA (18)</b><br><br>1. Luanda (Capital)<br>2. Benguela<br>3. Huíla (Lubango)<br>4. Huambo<br>5. Cabinda<br>6. Namibe (Moçâmedes)<br>7. Malanje<br>8. Kwanza Sul<br>9. Kwanza Norte<br>10. Uíge<br>11. Zaire<br>12. Bié<br>13. Cuando Cubango<br>14. Cunene<br>15. Lunda Norte<br>16. Lunda Sul<br>17. Moxico<br>18. Bengo<br><br><b>💡 Queres saber sobre qual província?</b>';
+}
+
+// LUBANGO / HUÍLA
+if(v.includes('lubango')||v.includes('huila')){
+return '<b>🇦🇴 HUÍLA / LUBANGO</b><br><br><b>Capital:</b> Lubango<br><b>Região:</b> Sul<br><b>População:</b> ~2.5 milhões<br><b>Altitude:</b> 1760m<br><br><b>História:</b> Fundada nos anos 1880 por colonos portugueses. Nome original: Sá da Bandeira.<br><br><b>Economia:</b> Agricultura (milho, feijão, batata), pecuária, turismo<br><br><b>Turismo:</b> Serra da Leba, Cristo Rei, Fenda da Tundavala, Museu Regional<br><br><b>Clima:</b> Temperado (15-25°C)';
+}
+
+// BENGUELA
+if(v.includes('benguela')){
+return '<b>🇦🇴 BENGUELA</b><br><br><b>Capital:</b> Benguela<br><b>Região:</b> Centro-Litoral<br><b>População:</b> ~2.2 milhões<br><br><b>História:</b> Fundada em 1617 pelos portugueses. Uma das cidades mais antigas de Angola.<br><br><b>Economia:</b> Pescas, agricultura, comércio, turismo<br><br><b>Praias:</b> Baía Farta, Morena, Caó, Lobito<br><br><b>Turismo:</b> Praia da Morena, Igreja Matriz, Mercado Municipal';
+}
+
+// LUANDA
+if(v.includes('luanda')){
+return '<b>🇦🇴 LUANDA</b><br><br><b>Capital:</b> Luanda<br><b>População:</b> ~8 milhões<br><b>Fundação:</b> 1576 por Paulo Dias de Novais<br><br><b>Economia:</b> Petróleo, comércio, serviços, indústria<br><br><b>Pontos turísticos:</b> Fortaleza de São Miguel, Ilha do Cabo, Museu Nacional, Agostinho Neto Memorial<br><br><b>Praias:</b> Ilha do Cabo, Mussulo, Sangana, Barra do Kwanza';
+}
+
+// CABINDA
+if(v.includes('cabinda')){
+return '<b>🇦🇴 CABINDA</b><br><br><b>Capital:</b> Cabinda<br><b>Região:</b> Norte (enclave)<br><b>População:</b> ~700.000<br><br><b>Economia:</b> Petróleo (maior produtor de Angola), madeira, agricultura<br><br><b>História:</b> Antigo reino do Congo, protetorado português (1885)<br><br><b>Praias:</b> Lândana, Bungo, Massabi';
+}
+
+// HUAMBO
+if(v.includes('huambo')){
+return '<b>🇦🇴 HUAMBO</b><br><br><b>Capital:</b> Huambo<br><b>Região:</b> Centro<br><b>Altitude:</b> 1700m<br><b>População:</b> ~2 milhões<br><br><b>História:</b> Fundada em 1912 (Nova Lisboa durante colonialismo)<br><br><b>Economia:</b> Agricultura, comércio, indústria<br><br><b>Pontos turísticos:</b> Catedral, Mercado Municipal, Jardim Botânico';
+}
+
+// MALANJE
+if(v.includes('malanje')){
+return '<b>🇦🇴 MALANJE</b><br><br><b>Capital:</b> Malanje<br><b>Região:</b> Centro-Norte<br><br><b>Pontos turísticos:</b><br>• Quedas de Kalandula (uma das maiores de África)<br>• Pungo Andongo (pedras negras)<br>• Lagoa do Carumbo<br><br><b>Economia:</b> Agricultura, turismo';
+}
+
+// NAMIBE
+if(v.includes('namibe')||v.includes('mocamedes')){
+return '<b>🇦🇴 NAMIBE (MOÇÂMEDES)</b><br><br><b>Capital:</b> Moçâmedes<br><b>Região:</b> Sul-Litoral<br><b>População:</b> ~500.000<br><br><b>História:</b> Fundada em 1840<br><br><b>Economia:</b> Pescas, agricultura (região desértica)<br><br><b>Turismo:</b> Deserto do Namibe, Praia da Sangia, Welwitschia mirabilis';
+}
+
+// LONDRES
+if(v.includes('londres')||v.includes('london')||v.includes('inglaterra')||v.includes('reino unido')){
+return '<b>🇬🇧 LONDRES / INGLATERRA</b><br><br><b>Capital:</b> Londres (Reino Unido)<br><b>População:</b> ~9 milhões (cidade), ~67 milhões (país)<br><b>Língua:</b> Inglês<br><b>Moeda:</b> Libra Esterlina (GBP)<br><br><b>História:</b><br>• Fundada pelos romanos (43 AD) como Londinium<br>• Centro do Império Britânico (século XIX-XX)<br>• Capital global de finanças, cultura, educação<br><br><b>Pontos turísticos:</b><br>• Big Ben, Parlamento, London Eye<br>• Torre de Londres, Buckingham Palace<br>• British Museum, Tate Modern<br>• Hyde Park, Thames River<br><br><b>Clima:</b><br>• Temperado oceânico<br>• Verão: 18-25°C<br>• Inverno: 2-8°C<br>• Chuvoso durante o ano';
+}
+
+// HERERO
+if(v.includes('herero')){
+return '<b>👥 POVOS HERERO</b><br><br><b>Localização:</b> Namíbia (principalmente), Sul de Angola (Cunene)<br><b>População:</b> ~250.000<br><br><b>História:</b><br>• Povo pastor de origem Bantu<br>• Chegaram à região no século XVI<br>• Resistência contra colonização alemã (1904-1908)<br>• Genocídio Herero (primeiro do século XX)<br><br><b>Cultura:</b><br>• Pastores de gado (riqueza = cabeças de gado)<br>• Vestes tradicionais: mulheres usam vestidos longos estilo vitoriano e chapéus em forma de chifres<br>• Língua: Otjiherero<br><br><b>Religião:</b> Cristianismo e crenças tradicionais';
+}
+
+// KHOISAN
+if(v.includes('khoisan')||v.includes('koisan')||v.includes('san')||v.includes('bosquimano')){
+return '<b>👥 POVOS KHOISAN (SAN/BOSQUIMANOS)</b><br><br><b>Localização:</b> Deserto do Kalahari (Botswana, Namíbia), Sul de Angola<br><b>População:</b> ~100.000<br><br><b>História:</b><br>• Povos mais antigos da humanidade<br>• Habitantes originais da África Austral<br>• Estilo de vida: caçadores-recoletores<br><br><b>Língua:</b><br>• Línguas Khoisan (cliques: ǀ, ǁ, ǃ, ǂ)<br>• Uma das famílias linguísticas mais antigas<br><br><b>Cultura:</b><br>• Arte rupestre (pinturas em cavernas)<br>• Conhecimento profundo da natureza<br>• Medicina tradicional com plantas';
+}
+
+// RECEITAS
+if(v.includes('receita')||v.includes('culinaria')||v.includes('comida')||v.includes('muamba')||v.includes('funge')||v.includes('calulu')){
+return '<b>🍳 RECEITAS ANGOLANAS</b><br><br><b>MUAMBA DE GALINHA</b><br>Ingredientes: 1 galinha, 200ml óleo de palma, 1 cebola, 3 dentes de alho, 2 tomates, sal, pimenta<br>Preparação: Tempere a galinha, frite no óleo de palma, adicione cebola e tomate, cozinhe 30-40 min. Sirva com funge.<br><br><b>FUNGE DE BOMBÓ</b><br>Ingredientes: 500g farinha de bombó, 1L água<br>Preparação: Ferva água, adicione farinha aos poucos, mexa até ficar consistente.<br><br><b>CALULU DE PEIXE</b><br>Ingredientes: 1kg peixe, 2 tomates, 1 cebola, 1 berinjela, óleo de palma<br>Preparação: Tempere e frite o peixe, cozinhe vegetais, junte tudo 20 min.';
+}
+
+// CLIMA
+if(v.includes('clima')||v.includes('temperatura')||v.includes('chuva')){
+return '<b>🌤️ CLIMA DE ANGOLA</b><br><br><b>Tipos:</b><br>• Tropical (Norte): Luanda, Zaire - 22-30°C<br>• Temperado (Centro-Sul): Huíla, Huambo - 15-25°C<br>• Desértico (Sul): Namibe - 20-35°C<br><br><b>Estações:</b><br>• Chuvosa: Novembro-Março<br>• Seca: Abril-Outubro<br><br><b>Temperaturas médias:</b><br>• Luanda: 24°C<br>• Lubango: 18°C<br>• Huambo: 19°C';
+}
+
+// INGLÊS
+if(v.includes('ingles')||v.includes('english')){
+return '<b>🌐 INGLÊS</b><br><br><b>Saudações:</b><br>• Hello = Olá<br>• Good morning = Bom dia<br>• How are you? = Como estás?<br>• I am fine = Estou bem<br>• Thank you = Obrigado<br><br><b>Números:</b><br>• One, Two, Three, Four, Five<br>• Six, Seven, Eight, Nine, Ten<br><br><b>Cores:</b><br>• Red, Blue, Green, Yellow<br>• Black, White, Orange<br><br><b>💡 Prática:</b> Escreve uma frase!';
+}
+
+// HISTÓRIA DE ANGOLA
+if(v.includes('historia')&&v.includes('angola')){
+return '<b>🇦🇴 HISTÓRIA DE ANGOLA</b><br><br><b>Pré-colonial:</b><br>• Reinos: Congo, Ndongo, Matamba<br>• Rainha Nzinga Mbande (1583-1663)<br><br><b>Colonização (1483-1961):</b><br>• 1483: Diogo Cão<br>• Tráfico de escravos<br><br><b>Independência:</b><br>• 11 de Novembro de 1975<br>• Agostinho Neto: 1º Presidente<br><br><b>Guerra Civil:</b><br>• 1975-2002<br>• Paz em 2002';
+}
+
+// ANGOLA (geral)
+if(v.includes('angola')){
+return '<b>🇦🇴 ANGOLA</b><br><br>Capital: Luanda<br>População: ~35 milhões<br>Independência: 11 Nov 1975<br>Províncias: 18<br>Língua: Português<br>Moeda: Kwanza (AOA)<br><br><b>💡 O que queres saber?</b>';
+}
+
+// SAUDAÇÃO
+if(v.includes('ola')||v.includes('oi')){
+return '<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>Posso ajudar com:<br>• 📚 História (Angola, África, Mundo)<br>• 👥 Povos africanos<br>• 🍳 Receitas<br>• 🌤️ Clima<br>• 🌐 Inglês<br>• 💡 Negócios<br>• 💻 Programação<br><br><b>O que queres aprender?</b>';
+}
+
+// AGRADECIMENTO
+if(v.includes('obrigado')||v.includes('valeu')){return '<b>💙 Sempre!</b> 🇦🇴';}
+
+// ADEUS
+if(v.includes('adeus')||v.includes('tchau')){return '<b>👋 Até logo!</b> 🇦🇴';}
+
+// PADRÃO
+return '<b>🤔 Interessante!</b><br><br>Conta mais. Estou aqui para ajudar com história, povos, receitas, clima, geografia, inglês, negócios e programação.';
+}
+function ask(t){add(t,1);setTimeout(()=>add(r(t),0),400);}
+function send(){const v=document.getElementById('inp').value;if(!v.trim())return;ask(v);document.getElementById('inp').value='';}
+add('<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>Aprende, cria e constrói o teu futuro.<br><br><b>Criado por George Waldir Ventura</b><br><br>Posso ajudar com história, povos, receitas, clima, geografia, inglês, negócios e programação.<br><br><b>O que queres aprender?</b>',0);
+</script>
+</body>
+</html>
