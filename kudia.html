@@ -1,1 +1,56 @@
 
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KudIA</title>
+<style>
+body{font-family:Arial;background:#000;color:#fff;margin:0;padding:20px}
+#chat{max-width:600px;margin:0 auto;padding:20px;background:#111;border-radius:10px;min-height:400px}
+.msg{margin:10px 0;padding:12px;border-radius:8px;max-width:80%}
+.user{background:#FFCD00;color:#000;float:right;clear:both}
+.ai{background:#333;color:#fff;clear:both}
+#inp{width:70%;padding:12px;border-radius:20px;border:1px solid #444;background:#222;color:#fff;font-size:16px}
+#btn{width:25%;padding:12px;border-radius:20px;border:none;background:#FFCD00;color:#000;font-weight:bold;cursor:pointer;font-size:16px}
+.q{display:inline-block;padding:8px 14px;margin:5px;background:#222;border:1px solid #444;border-radius:15px;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1 style="text-align:center;color:#FFCD00">KudIA 🇦🇴</h1>
+<div id="chat"></div>
+<div style="text-align:center;margin:10px">
+  <span class="q" onclick="ask('Gasolina')">⛽ Gasolina</span>
+  <span class="q" onclick="ask('Frutas')">🍌 Frutas</span>
+  <span class="q" onclick="ask('Transporte')">🚕 Transporte</span>
+  <span class="q" onclick="ask('Treinos')">💪 Treinos</span>
+</div>
+<div style="text-align:center;margin-top:20px">
+  <input type="text" id="inp" placeholder="Escreve...">
+  <button id="btn" onclick="send()">Enviar</button>
+</div>
+<script>
+const c=document.getElementById('chat');
+function add(t,u){
+  const d=document.createElement('div');
+  d.className='msg '+(u?'user':'ai');
+  d.innerHTML=t;
+  c.appendChild(d);
+  d.scrollIntoView();
+}
+function r(t){
+  t=t.toLowerCase();
+  if(t.includes('gasolina'))return '<b>⛽ GASOLINA</b><br>180-200 Kz/litro<br>Sonangol, Puma, Total';
+  if(t.includes('fruta'))return '<b>🍌 FRUTAS</b><br>Banana: 50-100 Kz<br>Manga: 100-200 Kz';
+  if(t.includes('transporte')||t.includes('taxi'))return '<b>🚕 TAXI</b><br>500-2000 Kz<br>Uber: 1500-6000 Kz';
+  if(t.includes('treino'))return '<b>💪 TREINO</b><br>Flexões: 3x10<br>Abdominais: 3x15';
+  if(t.includes('ola')||t.includes('oi'))return '<b>👋 Olá!</b><br>Gasolina, frutas, transporte, treinos...<br>O que precisas?';
+  if(t.includes('obrigado'))return '<b>💙</b> Sempre!';
+  return '<b>🤔</b> Ajudo com mercado, transporte, treinos.';
+}
+function ask(t){add(t,1);setTimeout(()=>add(r(t),0),300);}
+function send(){const v=document.getElementById('inp').value;if(!v)return;ask(v);document.getElementById('inp').value='';}
+add('<b>🤖 KudIA 🇦🇴</b><br>Gasolina, frutas, transporte, treinos<br><br>Escreve algo!',0);
+</script>
+</body>
+</html>
