@@ -1,25 +1,309 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GecIA — aprende, cria e constrói o teu futuro</title>
+  <style>
+    * { box-sizing: border-box; }
 
-    function ask(text) {
-      document.getElementById("text").value = text;
-      sendText(text);
-    }a
-
-    function sendText(text) {
-      text = text.trim();
-      if (!text) return;
-      addMessage(text, "user");
-      document.getElementById("text").value = "";
-      document.getElementById("typing").className = "show";
-
-      setTimeout(function() {
-        document.getElementById("typing").className = "";
-        addMessage(reply(text), "bot");
-      }, 500);
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #000000, #CC092F, #FFCD00);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: bgShift 12s ease infinite;
     }
 
-    function sendMessage(event) {
-      event.preventDefault();
-      sendText(document.getElementById("text").value);
+    @keyframes bgShift {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(10deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: slideDown 0.8s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #FFCD00, #ffffff, #CC092F);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 5px rgba(255,205,0,0.5)); }
+      to { filter: drop-shadow(0 0 15px rgba(255,205,0,0.9)); }
+    }
+
+    .flag {
+      font-size: 1.2rem;
+      margin-left: 8px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      margin-top: 8px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .author {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      opacity: 0.8;
+      font-style: italic;
+    }
+
+    .chat-box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+      max-height: 60vh;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .message {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 85%;
+      word-wrap: break-word;
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .user-message {
+      background: linear-gradient(135deg, #FFCD00, #FFA500);
+      color: #000;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+
+    .gecia-message {
+      background: linear-gradient(135deg, #CC092F, #8B0000);
+      color: #fff;
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+    }
+
+    .input-area {
+      display: flex;
+      margin-top: 16px;
+      gap: 10px;
+      animation: slideUp 0.8s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 25px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    input[type="text"]:focus {
+      transform: scale(1.02);
+    }
+
+    button {
+      padding: 14px 24px;
+      border-radius: 25px;
+      border: none;
+      background: linear-gradient(135deg, #FFCD00, #FFA500);
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .quick-questions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .quick-btn {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.75rem;
+      opacity: 0.7;
+      animation: fadeIn 2s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">GecIA<span class="flag">🇦🇴</span></div>
+      <div class="subtitle">Aprende, cria e constrói o teu futuro</div>
+      <div class="author">Criado por George Waldir Ventura</div>
+    </header>
+
+    <div class="chat-box" id="chat">
+      <div class="message gecia-message">
+        Olá! Sou a GecIA 🇦🇴 Como posso ajudar-te hoje?
+      </div>
+    </div>
+
+    <div class="quick-questions">
+      <button class="quick-btn" onclick="ask('Quem és tu?')">Quem és tu?</button>
+      <button class="quick-btn" onclick="ask('Ajuda-me a estudar')">📚 Estudar</button>
+      <button class="quick-btn" onclick="ask('Dá-me uma ideia de negócio')">💡 Ideia de negócio</button>
+      <button class="quick-btn" onclick="ask('Estou triste')">😔 Estou triste</button>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="text" placeholder="Escreve aqui..." onkeypress="if(event.key==='Enter') sendText()">
+      <button onclick="sendText()">Enviar</button>
+    </div>
+
+    <footer>
+      © 2026 GecIA — Angola 🇦🇴
+    </footer>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+
+    function addMessage(text, isUser) {
+      const div = document.createElement('div');
+      div.className = 'message ' + (isUser ? 'user-message' : 'gecia-message');
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function getResponse(text) {
+      const t = text.toLowerCase();
+
+      if (t.includes('olá') || t.includes('oi') || t.includes('bom dia') || t.includes('boa tarde') || t.includes('boa noite')) {
+        return 'Olá! 👋 Estou aqui para te ajudar. O que queres fazer hoje?';
+      }
+
+      if (t.includes('quem és tu') || t.includes('quem é você') || t.includes('quem és')) {
+        return 'Sou a GecIA, tua assistente de aprendizagem e criatividade 🇦🇴. Fui criada por George Waldir Ventura para ajudar jovens a estudar, criar ideias e construir o futuro.';
+      }
+
+      if (t.includes('estudar') || t.includes('aprender') || t.includes('aula') || t.includes('matéria')) {
+        return 'Vamos estudar! 📚 Diz-me: que matéria queres aprender hoje? Matemática, Português, Ciências, História, ou outra?';
+      }
+
+      if (t.includes('ideia') || t.includes('negócio') || t.includes('ganhar dinheiro') || t.includes('empreender')) {
+        return '💡 Ideia rápida: cria um serviço de entregas locais no teu bairro usando WhatsApp. Começa com 3 lojas pequenas, cobra uma taxa por entrega e usa bicicleta ou moto. Quer que eu detalhe o plano?';
+      }
+
+      if (t.includes('triste') || t.includes('ansioso') || t.includes('preocupado') || t.includes('mal')) {
+        return 'Sinto muito que estejas assim 😔. Queres desabafar? Às vezes, falar já ajuda. Se estiveres muito mal, procura alguém de confiança ou um profissional de saúde.';
+      }
+
+      if (t.includes('programação') || t.includes('código') || t.includes('javascript') || t.includes('html') || t.includes('python')) {
+        return 'Fixe! 💻 Queres começar do zero ou já tens alguma base? Posso dar-te um plano de estudo simples para 7 dias.';
+      }
+
+      if (t.includes('angola') || t.includes('luanda') || t.includes('lubango')) {
+        return 'Angola é nossa casa 🇦🇴. O que queres saber sobre o nosso país? História, economia, cultura, ou dicas para empreender aqui?';
+      }
+
+      return 'Interessante! 🤔 Podes dizer-me mais sobre isso? Estou aqui para ouvir e ajudar.';
+    }
+
+    function ask(text) {
+      if (!text || text.trim() === '') return;
+      addMessage(text, true);
+      setTimeout(() => {
+        const response = getResponse(text);
+        addMessage(response, false);
+      }, 600);
+      document.getElementById('text').value = '';
+    }
+
+    function sendText() {
+      const text = document.getElementById('text').value;
+      ask(text);
     }
   </script>
 </body>
