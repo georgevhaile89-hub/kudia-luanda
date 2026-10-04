@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GecIA PRO 🇦🇴</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,sans-serif;background:#000;color:#fff;min-height:100vh;padding:20px}
+.app{max-width:600px;margin:0 auto}
+h1{color:#FFCD00;text-align:center;margin-bottom:10px}
+.subtitle{text-align:center;color:#888;font-size:13px;margin-bottom:20px}
+#chat{background:#111;border-radius:12px;padding:20px;min-height:400px;margin-bottom:15px}
+.msg{margin:12px 0;padding:14px;border-radius:12px;max-width:85%;line-height:1.6;animation:fade 0.3s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.user{background:linear-gradient(135deg,#FFCD00,#FFA500);color:#000;float:right;clear:both}
+.ai{background:linear-gradient(135deg,#CC092F,#8B0000);color:#fff;clear:both}
+b{color:#FFCD00}
+ul{margin:10px 0;padding-left:20px}
+li{margin:6px 0}
+.q{display:inline-block;padding:10px 16px;margin:5px;background:#222;border:1px solid #444;border-radius:20px;font-size:13px;cursor:pointer}
+#inp{width:75%;padding:14px;border-radius:25px;border:1px solid #444;background:#222;color:#fff;font-size:15px}
+#btn{width:22%;padding:14px;border-radius:25px;border:none;background:#FFCD00;color:#000;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>GecIA 🇦🇴</h1>
+<div class="subtitle">Aprende, cria e constrói o teu futuro<br>Criado por George Waldir Ventura</div>
+<div id="chat"></div>
+<div style="text-align:center">
+<span class="q" onclick="ask('Inglês')">🌐 Inglês</span>
+<span class="q" onclick="ask('História de Angola')">🇦🇴 História</span>
+<span class="q" onclick="ask('Negócio')">💡 Negócio</span>
+<span class="q" onclick="ask('Programação')">💻 Código</span>
+</div>
+<div style="text-align:center;margin-top:15px">
+<input type="text" id="inp" placeholder="Escreve a tua pergunta...">
+<button id="btn" onclick="send()">Enviar</button>
+</div>
+</div>
+<script>
+const c=document.getElementById('chat');
+function add(t,u){
+const d=document.createElement('div');
+d.className='msg '+(u?'user':'ai');
+d.innerHTML=t;
+c.appendChild(d);
+c.scrollTop=c.scrollHeight;
+}
+function n(t){return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();}
+function r(t){
+const v=n(t);
+
+if(v.includes('ingles')||v.includes('english')){
+return '<b>🌐 INGLÊS — LÍNGUA GLOBAL</b><br><br>'+
+'<b>SAUDAÇÕES:</b><br>'+
+'• Hello = Olá<br>'+
+'• Good morning = Bom dia<br>'+
+'• Good afternoon = Boa tarde<br>'+
+'• How are you? = Como estás?<br>'+
+'• I am fine = Estou bem<br>'+
+'• Thank you = Obrigado<br>'+
+'• Please = Por favor<br><br>'+
+'<b>NÚMEROS:</b><br>'+
+'• One, Two, Three, Four, Five<br>'+
+'• Six, Seven, Eight, Nine, Ten<br><br>'+
+'<b>CORES:</b><br>'+
+'• Red, Blue, Green, Yellow<br>'+
+'• Black, White<br><br>'+
+'<b>💡 PRÁTICA:</b> Escreve uma frase para traduzir!';
+}
+
+if(v.includes('historia')&&v.includes('angola')){
+return '<b>🇦🇴 HISTÓRIA DE ANGOLA</b><br><br>'+
+'<b>PRÉ-COLONIAL:</b><br>'+
+'• Reinos: Congo, Ndongo, Matamba<br>'+
+'• Rainha Nzinga Mbande<br><br>'+
+'<b>COLONIZAÇÃO (1483-1961):</b><br>'+
+'• 1483: Diogo Cão<br>'+
+'• Tráfico de escravos<br><br>'+
+'<b>INDEPENDÊNCIA:</b><br>'+
+'• 11 de Novembro de 1975<br>'+
+'• Agostinho Neto: 1º Presidente<br><br>'+
+'<b>GUERRA CIVIL:</b><br>'+
+'• 1975-2002<br>'+
+'• Paz em 2002<br><br>'+
+'<b>💡 Queres saber mais?</b>';
+}
+
+if(v.includes('negocio')||v.includes('ideia')||v.includes('empreender')){
+return '<b>💡 NEGÓCIOS PARA ANGOLA</b><br><br>'+
+'<b>1️⃣ ENTREGAS:</b><br>'+
+'• 500-1000 Kz/entrega<br>'+
+'• Meta: 75-150 mil Kz/mês<br><br>'+
+'<b>2️⃣ REVENDA:</b><br>'+
+'• Luanda → Lubango<br>'+
+'• Lucro: 30-50%<br><br>'+
+'<b>3️⃣ DIGITAL:</b><br>'+
+'• Chatbots, sites<br>'+
+'• 10-50 mil Kz/projeto<br><br>'+
+'<b>💡 Qual queres detalhar?</b>';
+}
+
+if(v.includes('programacao')||v.includes('codigo')){
+return '<b>💻 PROGRAMAÇÃO</b><br><br>'+
+'<b>HTML:</b> Sites<br>'+
+'<b>CSS:</b> Estilo<br>'+
+'<b>JavaScript:</b> Interatividade<br>'+
+'<b>Python:</b> IA<br>'+
+'<b>Node.js:</b> Servidores<br><br>'+
+'<b>💡 Qual queres aprender?</b>';
+}
+
+if(v.includes('angola')){
+return '<b>🇦🇴 ANGOLA</b><br><br>'+
+'Capital: Luanda<br>'+
+'População: 35 milhões<br>'+
+'Independência: 11 Nov 1975<br>'+
+'Províncias: 18<br><br>'+
+'<b>💡 O que queres saber?</b>';
+}
+
+if(v.includes('ola')||v.includes('oi')){
+return '<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>'+
+'Posso ajudar com:<br>'+
+'• 📚 Inglês, História<br>'+
+'• 💡 Negócios<br>'+
+'• 💻 Programação<br>'+
+'• 🇦🇴 Angola<br><br>'+
+'<b>O que queres aprender?</b>';
+}
+
+if(v.includes('obrigado')||v.includes('valeu')){
+return '<b>💙 Sempre!</b> 🇦🇴🌙';
+}
+
+if(v.includes('adeus')||v.includes('tchau')){
+return '<b>👋 Até logo!</b> Volta sempre! 🇦🇴';
+}
+
+return '<b>🤔 Interessante!</b><br><br>Conta mais. Estou aqui para ajudar.';
+}
+function ask(t){add(t,1);setTimeout(()=>add(r(t),0),300);}
+function send(){const v=document.getElementById('inp').value;if(!v.trim())return;ask(v);document.getElementById('inp').value='';}
+add('<b>🌙 Olá! Sou GecIA 🇦🇴</b><br><br>Aprende, cria e constrói o teu futuro.<br><br><b>Como posso ajudar?</b>',0);
+</script>
+</body>
+</html>
