@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="pt-AO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GecIA — Inteligência Angolana 🇦🇴</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0d0d0d 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      animation: slideDown 0.6s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, #FFCD00, #ffffff, #CC092F);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 3px;
+      display: inline-block;
+    }
+
+    .flag {
+      font-size: 1.5rem;
+      margin-left: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .tagline {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    .author {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      scroll-behavior: smooth;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 85%;
+      word-wrap: break-word;
+      animation: messageIn 0.3s ease;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user-message {
+      background: linear-gradient(135deg, #FFCD00, #FFA500);
+      color: #000;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+      font-weight: 500;
+    }
+
+    .gecia-message {
+      background: linear-gradient(135deg, #CC092F, #8B0000);
+      color: #fff;
+      margin-right: auto;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .typing {
+      opacity: 0.7;
+      font-style: italic;
+      font-size: 0.85rem;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 25px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 20px;
+      border: none;
+      background: rgba(255,255,255,0.95);
+      color: #000;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: 20px;
+      border: none;
+      background: linear-gradient(135deg, #FFCD00, #FFA500);
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    button:hover { transform: scale(1.05); }
+    button:active { transform: scale(0.95); }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px;
+      overflow-x: auto;
+    }
+
+    .quick-btn {
+      padding: 6px 12px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .quick-btn:hover {
+      background: rgba(255,255,255,0.25);
+      transform: scale(1.05);
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 0.75rem;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .help-panel {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 280px;
+      height: 100vh;
+      background: rgba(10,10,10,0.98);
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding: 20px;
+      transition: right 0.3s ease;
+      z-index: 200;
+      overflow-y: auto;
+    }
+
+    .help-panel.open { right: 0; }
+
+    .help-panel h3 {
+      color: #FFCD00;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    .help-panel ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .help-panel li {
+      padding: 6px 0;
+      font-size: 0.85rem;
+      opacity: 0.9;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      opacity: 0.5;
+      padding: 8px;
+    }
+
+    .moon {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+      animation: moonGlow 3s infinite;
+      z-index: 50;
+    }
+
+    @keyframes moonGlow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+      50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="moon">🌙</div>
+
+  <button class="menu-btn" onclick="toggleHelp()">☰ Menu</button>
+
+  <div class="help-panel" id="helpPanel">
+    <span class="close-btn" onclick="toggleHelp()">&times;</span>
+    <h3>GecIA — Comandos 🇦🇴</h3>
+    <ul>
+      <li><strong>ola / oi</strong> — Saudação</li>
+      <li><strong>quem es</strong> — Sobre a GecIA</li>
+      <li><strong>ajuda</strong> — Menu de ajuda</li>
+      <li><strong>estudar</strong> — Matérias</li>
+      <li><strong>historia</strong> — História</li>
+      <li><strong>matematica</strong> — Matemática</li>
+      <li><strong>ingles</strong> — Inglês</li>
+      <li><strong>negocio</strong> — Negócios</li>
+      <li><strong>programacao</strong> — Programação</li>
+      <li><strong>angola</strong> — Angola</li>
+      <li><strong>limpar</strong> — Limpar chat</li>
+    </ul>
+    <p style="margin-top:20px;font-size:0.75rem;opacity:0.6;">George Waldir Ventura 🇦🇴</p>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="logo">GecIA<span class="flag">🇦🇴</span></div>
+      <div class="tagline">Aprende, cria e constrói o teu futuro</div>
+      <div class="author">Criado por George Waldir Ventura</div>
+    </header>
+
+    <div class="chat-box" id="chat">
+      <div class="message gecia-message">
+        🌙 Olá! Sou a <strong>GecIA</strong> 🇦🇴<br><br>
+        Sou tua assistente de inteligência artificial para:<br>
+        • 📚 <strong>Estudar</strong> — Matemática, Português, Inglês, História, Ciências<br>
+        • 💡 <strong>Negócios</strong> — Ideias, planos, empreendedorismo<br>
+        • 💻 <strong>Programação</strong> — HTML, JavaScript, Python, chatbots<br>
+        • 🇦🇴 <strong>Angola</strong> — História, cultura, oportunidades<br><br>
+        Digita <strong>ajuda</strong> para ver todos os comandos.<br><br>
+        <strong>Como posso ajudar-te hoje?</strong>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <button class="quick-btn" onclick="ask('ola')">👋 Olá</button>
+      <button class="quick-btn" onclick="ask('ajuda')">❓ Ajuda</button>
+      <button class="quick-btn" onclick="ask('estudar')">📚 Estudar</button>
+      <button class="quick-btn" onclick="ask('negocio')">💡 Negócio</button>
+      <button class="quick-btn" onclick="ask('programacao')">💻 Código</button>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="text" placeholder="Escreve aqui..." onkeypress="if(event.key==='Enter') sendText()">
+      <button onclick="sendText()">Enviar</button>
+    </div>
+
+    <footer>© 2026 GecIA — Angola 🇦🇴</footer>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    let conversationHistory = [];
+    let lastTopic = null;
+
+    function toggleHelp() {
+      document.getElementById('helpPanel').classList.toggle('open');
+    }
+
+    function addMessage(text, isUser) {
+      const div = document.createElement('div');
+      div.className = 'message ' + (isUser ? 'user-message' : 'gecia-message');
+      div.innerHTML = text.replace(/
+/g, '<br>');
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function normalize(text) {
+      return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+    }
+
+    function getResponse(text) {
+      const t = normalize(text);
+      conversationHistory.push({ user: text, time: Date.now() });
+
+      // Limpar conversa
+      if (t === 'limpar' || t === 'clear') {
+        conversationHistory = [];
+        lastTopic = null;
+        chat.innerHTML = '<div class="message gecia-message">💬 Conversa limpa! Como posso ajudar?</div>';
+        return '';
+      }
+
+      // Ajuda
+      if (t === 'ajuda' || t === 'help' || t === 'menu') {
+        return '📋 <strong>Comandos GecIA</strong> 🇦🇴<br><br>' +
+               '• <strong>ola / oi</strong> — Saudação<br>' +
+               '• <strong>quem es</strong> — Sobre mim<br>' +
+               '• <strong>estudar</strong> — Matemática, Português, Inglês, História, Ciências<br>' +
+               '• <strong>negocio</strong> — Ideias e planos de negócio<br>' +
+               '• <strong>programacao</strong> — HTML, JavaScript, Python, chatbots<br>' +
+               '• <strong>angola</strong> — História, economia, cultura<br>' +
+               '• <strong>limpar</strong> — Limpar conversa<br><br>' +
+               '💡 <strong>Dica:</strong> Podes escrever naturalmente. Ex: "Quero aprender inglês" ou "Preciso de uma ideia de negócio"';
+      }
+
+      // Saudações
+      if (t.includes('ola') || t.includes('oi') || t.includes('bom dia') || t.includes('boa tarde') || t.includes('boa noite') || t.includes('salve') || t.includes('e ai')) {
+        const greetings = [
+          'Olá! 👋 Pronto para aprender algo novo hoje?',
+          'Oi! 🇦🇴 Em que posso ajudar?',
+          'Salve! 💪 O que vamos construir hoje?',
+          'E aí! 🌙 Qual é o plano?'
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+      }
+
+      // Quem és
+      if (t.includes('quem es') || t.includes('quem e voce') || t.includes('quem e tu') || t.includes('teu nome') || t.includes('o que es')) {
+        return '🤖 Sou a <strong>GecIA</strong> — Inteligência Artificial Angolana 🇦🇴<br><br>' +
+               'Fui criada por <strong>George Waldir Ventura</strong> para ajudar jovens angolanos a:<br>' +
+               '• 📚 <strong>Estudar melhor</strong> — Explicações claras de Matemática, Português, Inglês, História, Ciências<br>' +
+               '• 💡 <strong>Criar negócios</strong> — Ideias, planos, estratégias para empreender em Angola<br>' +
+               '• 💻 <strong>Aprender programação</strong> — HTML, JavaScript, Python, chatbots, web<br>' +
+               '• 🇦🇴 <strong>Conhecer Angola</strong> — História, economia, cultura, oportunidades<br><br>' +
+               'Estou em constante aprendizagem. Podes fazer perguntas naturais, como "Quero aprender inglês" ou "Preciso de uma ideia de negócio".<br><br>' +
+               '<strong>Como posso ajudar-te hoje?</strong>';
+      }
+
+      // Estudar
+      if (t.includes('estudar') || t.includes('aprender') || t.includes('aula') || t.includes('materia') || t.includes('ensinar') || t.includes('quero aprender') || t.includes('preciso aprender')) {
+        lastTopic = 'estudar';
+        return '📚 <strong>Vamos estudar!</strong><br><br>' +
+               'Escolhe uma matéria:<br>' +
+               '• <strong>Matematica</strong> — Números, álgebra, geometria, trigonometria<br>' +
+               '• <strong>Portugues</strong> — Gramática, redação, interpretação de texto<br>' +
+               '• <strong>Ingles</strong> — Do básico ao avançado, conversação, business<br>' +
+               '• <strong>Historia</strong> — Angola, África, Mundo<br>' +
+               '• <strong>Ciencias</strong> — Biologia, Física, Química<br>' +
+               '• <strong>Geografia</strong> — Países, capitais, mapas<br><br>' +
+               '💡 <strong>Exemplo:</strong> Escreve "Quero aprender inglês" ou "Preciso de ajuda com matemática"';
+      }
+
+      // Inglês
+      if (t.includes('ingles') || t.includes('english') || t.includes('lingua inglesa') || t.includes('aprender ingles') || t.includes('falar ingles')) {
+        lastTopic = 'ingles';
+        return '🌐 <strong>Inglês — A língua global!</strong> 🇦🇴<br><br>' +
+               '<strong>Nível Básico:</strong><br>' +
+               '• Saudações: Hello (Olá), Good morning (Bom dia), How are you? (Como estás?)<br>' +
+               '• Números: One (1), Two (2), Three (3), Four (4), Five (5)<br>' +
+               '• Cores: Red (Vermelho), Blue (Azul), Green (Verde), Yellow (Amarelo)<br>' +
+               '• Família: Mother (Mãe), Father (Pai), Brother (Irmão), Sister (Irmã)<br><br>' +
+               '<strong>Nível Intermediário:</strong><br>' +
+               '• Verbos no passado: I went (Eu fui), I ate (Eu comi), I studied (Eu estudei)<br>' +
+               '• Frases úteis: I need help (Preciso de ajuda), Can you speak slowly? (Podes falar devagar?)<br><br>' +
+               '<strong>Nível Avançado:</strong><br>' +
+               '• Business English: Meetings, presentations, emails<br>' +
+               '• IELTS / TOEFL preparation<br><br>' +
+               '💡 <strong>Prática:</strong> Escreve uma frase em inglês que queres aprender ou traduzir!';
+      }
+
+      // Matemática
+      if (t.includes('matematica') || t.includes('numeros') || t.includes('calcular') || t.includes('conta') || t.includes('algebra') || t.includes('geometria') || t.includes('equacao') || t.includes('resolver')) {
+        lastTopic = 'matematica';
+        return '🔢 <strong>Matemática — A linguagem do universo!</strong><br><br>' +
+               '<strong>Matemática Básica:</strong><br>' +
+               '• Soma: 5 + 3 = 8<br>' +
+               '• Subtração: 10 - 4 = 6<br>' +
+               '• Multiplicação: 7 × 6 = 42<br>' +
+               '• Divisão: 20 ÷ 4 = 5<br><br>' +
+               '<strong>Álgebra:</strong><br>' +
+               '• Equação simples: 2x + 5 = 15 → x = 5<br>' +
+               '• Funções: f(x) = 2x + 3<br><br>' +
+               '<strong>Geometria:</strong><br>' +
+               '• Área do quadrado: lado × lado<br>' +
+               '• Área do círculo: π × raio² (π ≈ 3.14)<br>' +
+               '• Teorema de Pitágoras: a² + b² = c²<br><br>' +
+               '<strong>Trigonometria:</strong><br>' +
+               '• Seno, Cosseno, Tangente<br>' +
+               '• Triângulos retângulos<br><br>' +
+               '💡 <strong>Exercício:</strong> Escreve uma equação ou problema que queres resolver!';
+      }
+
+      // Português
+      if (t.includes('portugues') || t.includes('gramatica') || t.includes('redacao') || t.includes('texto') || t.includes('verbo') || t.includes('substantivo') || t.includes('frase')) {
+        lastTopic = 'portugues';
+        return '📖 <strong>Português — A nossa língua!</strong> 🇦🇴<br><br>' +
+               '<strong>Gramática:</strong><br>' +
+               '• Substantivo: nome de pessoas, lugares, coisas (ex: casa, livro, Angola)<br>' +
+               '• Verbo: ação ou estado (ex: estudar, comer, ser)<br>' +
+               '• Adjetivo: qualidade (ex: bonito, inteligente, rápido)<br>' +
+               '• Pronome: substitui substantivo (ex: eu, tu, ele, nós)<br><br>' +
+               '<strong>Redação:</strong><br>' +
+               '• Introdução: apresenta o tema<br>' +
+               '• Desenvolvimento: explica com exemplos<br>' +
+               '• Conclusão: resume e fecha o texto<br><br>' +
+               '<strong>Dicas para escrever bem:</strong><br>' +
+               '1. Lê muito (livros, notícias, artigos)<br>' +
+               '2. Escreve todos os dias<br>' +
+               '3. Revisa o teu texto antes de entregar<br>' +
+               '4. Usa sinónimos para evitar repetição<br><br>' +
+               '💡 <strong>Prática:</strong> Escreve uma frase ou parágrafo e eu ajudo a melhorar!';
+      }
+
+      // História
+      if (t.includes('historia') || t.includes('historico') || t.includes('passado') || t.includes('antigo')) {
+        lastTopic = 'historia';
+        return '📜 <strong>História — A nossa raiz!</strong> 🇦🇴<br><br>' +
+               '<strong>História de Angola:</strong><br>' +
+               '• <strong>Pré-colonial:</strong> Reinos do Congo, Ndongo, Matamba (séculos XV-XVII)<br>' +
+               '• <strong>Colonização:</strong> Chegada dos portugueses (1483), tráfico de escravos<br>' +
+               '• <strong>Luta pela Independência:</strong> 1961-1975 (MPLA, FNLA, UNITA)<br>' +
+               '• <strong>Independência:</strong> 11 de Novembro de 1975<br>' +
+               '• <strong>Guerra Civil:</strong> 1975-2002<br>' +
+               '• <strong>Paz e Reconstrução:</strong> 2002 até hoje<br><br>' +
+               '<strong>História de África:</strong><br>' +
+               '• Antigos reinos: Egito, Etiópia, Mali, Zimbábue<br>' +
+               '• Impérios: Songhai, Ghana, Axum<br>' +
+               '• Descolonização: Décadas de 1950-1970<br><br>' +
+               '<strong>História Mundial:</strong><br>' +
+               '• Primeira Guerra Mundial (1914-1918)<br>' +
+               '• Segunda Guerra Mundial (1939-1945)<br>' +
+               '• Guerra Fria (1947-1991)<br>' +
+               '• Descolonização de África (1950-1975)<br><br>' +
+               '💡 <strong>Queres saber mais sobre qual período?</strong>';
+      }
+
+      // Ciências
+      if (t.includes('ciencias') || t.includes('biologia') || t.includes('fisica') || t.includes('quimica') || t.includes('natureza') || t.includes('celula') || t.includes('atomo') || t.includes('energia')) {
+        lastTopic = 'ciencias';
+        return '🔬 <strong>Ciências — Descobre o mundo!</strong> 🌍<br><br>' +
+               '<strong>Biologia:</strong><br>' +
+               '• Célula: unidade básica da vida<br>' +
+               '• DNA: código genético de todos os seres vivos<br>' +
+               '• Ecossistema: conjunto de seres vivos e ambiente<br>' +
+               '• Fotossíntese: plantas produzem oxigénio<br><br>' +
+               '<strong>Física:</strong><br>' +
+               '• Movimento: velocidade, aceleração<br>' +
+               '• Energia: cinética, potencial, térmica<br>' +
+               '• Forças: gravidade, atrito, elétrica<br>' +
+               '• Leis de Newton: movimento dos corpos<br><br>' +
+               '<strong>Química:</strong><br>' +
+               '• Átomo: prótons, nêutrons, elétrons<br>' +
+               '• Tabela periódica: 118 elementos<br>' +
+               '• Reações químicas: combinação de substâncias<br>' +
+               '• pH: ácido (0-6), neutro (7), básico (8-14)<br><br>' +
+               '💡 <strong>Qual ciência queres explorar?</strong>';
+      }
+
+      // Negócio
+      if (t.includes('negocio') || t.includes('empreender') || t.includes('ganhar dinheiro') || t.includes('ideia') || t.includes('trabalho') || t.includes('renda') || t.includes('vender') || t.includes('comercio') || t.includes('empresa') || t.includes('lucro')) {
+        lastTopic = 'negocio';
+        return '💡 <strong>Ideias de Negócio para Angola</strong> 🇦🇴<br><br>' +
+               '<strong>1️⃣ Entregas Locais com WhatsApp</strong><br>' +
+               '• Cria um serviço de entregas no teu bairro<br>' +
+               '• Cobra 500-1000 Kz por entrega<br>' +
+               '• Usa bicicleta ou moto<br>' +
+               '• Parceria com 3-5 lojas pequenas<br>' +
+               '• <strong>Meta:</strong> 5 entregas/dia = 2500-5000 Kz/dia = 75.000-150.000 Kz/mês<br><br>' +
+               '<strong>2️⃣ Revenda de Produtos</strong><br>' +
+               '• Compra em Luanda (feira, armazém)<br>' +
+               '• Vende em Lubango, Benguela, Huíla<br>' +
+               '• Produtos: roupa, eletrônicos, comida<br>' +
+               '• <strong>Lucro:</strong> 30-50% por produto<br><br>' +
+               '<strong>3️⃣ Serviços Digitais</strong><br>' +
+               '• Cria chatbots para lojas<br>' +
+               '• Ajuda negócios a usar WhatsApp Business<br>' +
+               '• Gestão de redes sociais<br>' +
+               '• <strong>Preço:</strong> 10.000-50.000 Kz por projeto<br><br>' +
+               '<strong>4️⃣ Comida / Lanches</strong><br>' +
+               '• Vende lanches na escola ou bairro<br>' +
+               '• Produtos: sanduíches, sumos, bolos<br>' +
+               '• <strong>Investimento:</strong> 5.000-20.000 Kz<br>' +
+               '• <strong>Lucro:</strong> 50-100%<br><br>' +
+               '💡 <strong>Queres que eu detalhe algum destes negócios?</strong> Escreve "detalha 1", "detalha 2", etc.';
+      }
+
+      // Programação
+      if (t.includes('programacao') || t.includes('codigo') || t.includes('javascript') || t.includes('html') || t.includes('python') || t.includes('css') || t.includes('web') || t.includes('app') || t.includes('site') || t.includes('bot') || t.includes('chatbot')) {
+        lastTopic = 'programacao';
+        return '💻 <strong>Programação — Constrói o futuro!</strong> 🚀<br><br>' +
+               '<strong>HTML (Estrutura de sites):</strong><br>' +
+               '• <code>&lt;h1&gt;</code> — Título principal<br>' +
+               '• <code>&lt;p&gt;</code> — Parágrafo<br>' +
+               '• <code>&lt;button&gt;</code> — Botão<br>' +
+               '• <code>&lt;input&gt;</code> — Campo de texto<br><br>' +
+               '<strong>CSS (Estilo e cores):</strong><br>' +
+               '• <code>background-color</code> — Cor de fundo<br>' +
+               '• <code>color</code> — Cor do texto<br>' +
+               '• <code>font-size</code> — Tamanho da letra<br>' +
+               '• <code>margin / padding</code> — Espaçamento<br><br>' +
+               '<strong>JavaScript (Interatividade):</strong><br>' +
+               '• Variáveis: <code>let nome = "George"</code><br>' +
+               '• Funções: <code>function saudacao() { ... }</code><br>' +
+               '• Eventos: <code>onclick</code>, <code>onkeypress</code><br>' +
+               '• DOM: manipular elementos da página<br><br>' +
+               '<strong>Python (IA e automação):</strong><br>' +
+               '• Fácil de aprender<br>' +
+               '• Usado em IA, dados, web<br>' +
+               '• Bibliotecas: pandas, numpy, tensorflow<br><br>' +
+               '<strong>Node.js (Servidores):</strong><br>' +
+               '• Cria APIs e backends<br>' +
+               '• WhatsApp bots<br>' +
+               '• Aplicações web em tempo real<br><br>' +
+               '💡 <strong>Queres começar por qual linguagem?</strong> Escreve "HTML", "JavaScript", "Python", etc.';
+      }
+
+      // Angola
+      if (t.includes('angola') || t.includes('luanda') || t.includes('lubango') || t.includes('benguela') || t.includes('huila') || t.includes('cabinda') || t.includes('namibe') || t.includes('malanje') || t.includes('mocamedes')) {
+        lastTopic = 'angola';
+        return '🇦🇴 <strong>Angola — A nossa casa!</strong><br><br>' +
+               '<strong>Informações Gerais:</strong><br>' +
+               '• Capital: Luanda<br>' +
+               '• População: ~35 milhões<br>' +
+               '• Língua oficial: Português<br>' +
+               '• Moeda: Kwanza (AOA)<br>' +
+               '• Independência: 11 de Novembro de 1975<br><br>' +
+               '<strong>Províncias (18):</strong><br>' +
+               'Luanda, Benguela, Huíla, Lubango, Cabinda, Namibe, Malanje, Huambo, Bié, Kwanza Sul, Kwanza Norte, Uíge, Zaire, Cuando Cubango, Cunene, Moxico, Lunda Norte, Lunda Sul<br><br>' +
+               '<strong>Economia:</strong><br>' +
+               '• Petróleo (maior exportação)<br>' +
+               '• Diamantes<br>' +
+               '• Agricultura (café, algodão, milho)<br>' +
+               '• Pescas<br><br>' +
+               '<strong>Cultura:</strong><br>' +
+               '• Música: Kizomba, Semba, Kuduro<br>' +
+               '• Dança tradicional<br>' +
+               '• Artesanato<br><br>' +
+               '💡 <strong>O que queres saber sobre Angola?</strong>';
+      }
+
+      // Respostas de confirmação (Sim, Quero, Detalha)
+      if (t === 'sim' || t === 'quero' || t === 'detalha' || t === 'detalhes' || t === 'explica' || t === 'continua' || t === 'fala mais' || t === 'conta mais' || t.includes('quero que') || t.includes('quero saber') || t.includes('me explica') || t.includes('me detalha') || t === '1' || t === '2' || t === '3' || t === '4') {
+        
+        if (lastTopic === 'negocio') {
+          return '🚀 <strong>Plano Detalhado: Entregas Locais com WhatsApp</strong><br><br>' +
+                 '<strong>SEMANA 1 — Preparação</strong><br>' +
+                 'Dia 1-2:<br>' +
+                 '• Escolhe um nome: "Kamba Entregas", "Rapidinho Luanda", "Expresso do Bairro"<br>' +
+                 '• Define preços: 500 Kz (até 2km), 1000 Kz (2-5km), 1500 Kz (5km+)<br>' +
+                 '• Compra um caderno para registar encomendas<br>' +
+                 '• Cria um número de WhatsApp exclusivo para o negócio<br><br>' +
+                 'Dia 3-4:<br>' +
+                 '• Visita 5-10 lojas pequenas do bairro (mercearias, farmácias, papelarias)<br>' +
+                 '• Proposta: "Faço as vossas entregas por 500 Kz. Vocês cobram ao cliente e ficam com o lucro da venda, eu fico com a taxa de entrega."<br>' +
+                 '• Pede para colocarem o teu número como "entregador oficial"<br><br>' +
+                 'Dia 5-7:<br>' +
+                 '• Cria um grupo no WhatsApp com os donos das lojas<br>' +
+                 '• Manda mensagem diária: "Disponível para entregas hoje!"<br>' +
+                 '• Faz testes com 2-3 entregas reais<br><br>' +
+                 '<strong>SEMANA 2 — Lançamento</strong><br>' +
+                 '• Imprime flyers simples (papel A4, fotocópia)<br>' +
+                 '• Distribui no bairro: "Entregas ao domicílio — 500 Kz"<br>' +
+                 '• Pede aos clientes para indicarem amigos<br>' +
+                 '• Oferece 1ª entrega grátis para novos clientes<br><br>' +
+                 '<strong>SEMANA 3-4 — Crescimento</strong><br>' +
+                 '• Regista todas as entregas: data, loja, cliente, valor<br>' +
+                 '• Analisa quais lojas dão mais encomendas<br>' +
+                 '• Foca nessas lojas e oferece desconto por volume<br>' +
+                 '• Considera contratar um amigo para ajudar (divide lucro 50/50)<br><br>' +
+                 '<strong>METAS REALISTAS:</strong><br>' +
+                 '• Semana 1: 1-2 entregas/dia = 500-1000 Kz/dia<br>' +
+                 '• Semana 2: 3-5 entregas/dia = 1500-2500 Kz/dia<br>' +
+                 '• Semana 3-4: 5-10 entregas/dia = 2500-5000 Kz/dia<br>' +
+                 '• <strong>Mês 1:</strong> 50.000-100.000 Kz<br>' +
+                 '• <strong>Mês 3:</strong> 150.000-300.000 Kz<br><br>' +
+                 '<strong>DICAS DE OURO:</strong><br>' +
+                 '✅ Sempre pontual<br>' +
+                 '✅ Trata bem os clientes (sorriso, educação)<br>' +
+                 '• Guarda contatos de todos os clientes<br>' +
+                 '• Pede feedback após cada entrega<br>' +
+                 '• Usa uniforme simples (camisa da mesma cor)<br><br>' +
+                 '💡 <strong>Queres ajuda para criar o nome, o flyer ou a mensagem de WhatsApp?</strong>';
+        }
+        
+        if (lastTopic === 'estudar' || lastTopic === 'ingles' || lastTopic === 'matematica' || lastTopic === 'portugues' || lastTopic === 'historia' || lastTopic === 'ciencias') {
+          return '📚 <strong>Como queres estudar?</strong><br><br>' +
+                 '• <strong>Resumos</strong> — Explicações curtas e diretas<br>' +
+                 '• <strong>Exercícios</strong> — Praticar com questões<br>' +
+                 '• <strong>Testes</strong> — Simular exames<br>' +
+                 '• <strong>Explicação completa</strong> — Teoria detalhada com exemplos<br>' +
+                 '• <strong>Dicas de estudo</strong> — Como organizar o tempo, técnicas de memorização<br><br>' +
+                 '💡 <strong>Exemplo:</strong> Escreve "Quero exercícios de matemática" ou "Faz um teste de inglês"';
+        }
+        
+        if (lastTopic === 'programacao') {
+          return '💻 <strong>Qual linguagem queres aprender?</strong><br><br>' +
+                 '• <strong>HTML/CSS</strong> — Cria sites do zero (recomendado para iniciantes)<br>' +
+                 '• <strong>JavaScript</strong> — Torna sites interativos<br>' +
+                 '• <strong>Python</strong> — IA, automação, análise de dados<br>' +
+                 '• <strong>Node.js</strong> — Servidores e APIs<br>' +
+                 '• <strong>WhatsApp Bot</strong> — Chatbots com Node.js + WhatsApp API<br><br>' +
+                 '💡 <strong>Recomendação:</strong> Começa com HTML + CSS, depois JavaScript. Em 2 semanas já tens um site no ar!';
+        }
+        
+        return '🤔 <strong>Sobre o que queres que eu detalhe?</strong><br><br>Escreve o tema e eu explico passo a passo!';
+      }
+
+      // IA / Inteligência Artificial
+      if (t.includes('ia') || t.includes('inteligencia artificial') || t.includes('machine learning') || t.includes('chatbot') || t.includes('gpt') || t.includes('modelo de linguagem')) {
+        return '🤖 <strong>IA (Inteligência Artificial)</strong><br><br>' +
+               '<strong>O que é IA?</strong><br>' +
+               'IA é tecnologia que permite a computadores "pensar" como humanos: aprender, raciocinar, criar.<br><br>' +
+               '<strong>Tipos de IA:</strong><br>' +
+               '• <strong>IA Fraca:</strong> Faz uma tarefa específica (ex: chatbots, reconhecimento de voz)<br>' +
+               '• <strong>IA Forte:</strong> Raciocina como humano (ainda em desenvolvimento)<br>' +
+               '• <strong>Machine Learning:</strong> IA que aprende com dados<br>' +
+               '• <strong>Deep Learning:</strong> Redes neurais complexas<br><br>' +
+               '<strong>Aplicações em Angola:</strong><br>' +
+               '• <strong>Chatbots:</strong> Atendimento automático em WhatsApp<br>' +
+               '• <strong>Análise de dados:</strong> Vendas, tendências, previsões<br>' +
+               '• <strong>Automação:</strong> Tarefas repetitivas (faturas, relatórios)<br>' +
+               '• <strong>Educação:</strong> Tutores inteligentes, correção de exercícios<br>' +
+               '• <strong>Saúde:</strong> Diagnóstico辅助, análise de exames<br><br>' +
+               '<strong>Como começar:</strong><br>' +
+               '1. Aprende Python (linguagem de IA)<br>' +
+               '2. Estuda Machine Learning (Coursera, edX)<br>' +
+               '3. Pratica com projetos pequenos<br>' +
+               '4. Cria um chatbot ou analisador de dados<br><br>' +
+               '💡 <strong>Queres aprender a criar um chatbot como eu?</strong>';
+      }
+
+      // Motivacional
+      if (t.includes('motivacao') || t.includes('motivacional') || t.includes('frase') || t.includes('inspiracao') || t.includes('acreditar') || t.includes('sonho') || t.includes('desistir') || t.includes('cansado') || t.includes('desanimado')) {
+        const quotes = [
+          '💪 <strong>"O futuro pertence a quem acredita nos seus sonhos."</strong> — Tu podes ser o próximo grande empreendedor angolano!',
+          '🌟 <strong>"Cada dia é uma nova oportunidade para construir algo grande."</strong>',
+          '🇦🇴 <strong>"Angola precisa de ti. O teu talento pode mudar vidas."</strong>',
+          '🚀 <strong>"Não esperes pelo momento perfeito. Cria-o!"</strong>',
+          '🔥 <strong>"O sucesso é a soma de pequenos esforços repetidos dia após dia."</strong>',
+          '💡 <strong>"A única maneira de fazer um excelente trabalho é amar o que fazes."</strong> — Steve Jobs',
+          '🌙 <strong>"As noites de estudo são o investimento para os dias de glória."</strong>'
+        ];
+        return quotes[Math.floor(Math.random() * quotes.length)];
+      }
+
+      // Triste / emocional
+      if (t.includes('triste') || t.includes('ansioso') || t.includes('preocupado') || t.includes('mal') || t.includes('cansado') || t.includes('sozinho') || t.includes('depressao') || t.includes('medo') || t.includes('angustia')) {
+        return '😔 <strong>Sinto muito que estejas assim.</strong><br><br>' +
+               'Queres desabafar? Às vezes, falar já ajuda.<br><br>' +
+               '<strong>Lembra-te:</strong><br>' +
+               '• Não estás sozinho. Muitas pessoas passam por isso.<br>' +
+               '• Pedir ajuda é sinal de força, não de fraqueza.<br>' +
+               '• Dias difíceis passam. A tempestade não dura para sempre.<br><br>' +
+               '<strong>Se estiveres muito mal:</strong><br>' +
+               '• Fala com alguém de confiança (família, amigo, professor)<br>' +
+               '• Procura um profissional de saúde (psicólogo, médico)<br>' +
+               '• Em Angola, procura o posto de saúde mais próximo<br><br>' +
+               '💙 <strong>Estou aqui para ouvir. Queres falar sobre o que estás a sentir?</strong>';
+      }
+
+      // Agradecimento
+      if (t.includes('obrigado') || t.includes('obrigada') || t.includes('valeu') || t.includes('thanks') || t.includes('agradeco') || t.includes('brilhante') || t.includes('fixe') || t.includes('bom') || t.includes('ótimo') || t.includes('excelente')) {
+        const thanks = [
+          'Sempre que precisares, estou aqui! 🇦🇴💪',
+          'Fixe! Volta quando quiseres aprender mais! 🌙',
+          'Estou contigo! 💡🇦🇴',
+          'A nossa jornada está só a começar! 🚀',
+          'Obrigado por confiares em mim! ❤',
+          'Juntos vamos longe! 🇦🇴'
+        ];
+        return thanks[Math.floor(Math.random() * thanks.length)];
+      }
+
+      // Adeus
+      if (t.includes('adeus') || t.includes('tchau') || t.includes('ate logo') || t.includes('ate mais') || t.includes('fim') || t.includes('sair') || t.includes('parar') || t.includes('bye')) {
+        return '👋 <strong>Até logo!</strong><br><br>' +
+               'Volta sempre que precisares. <strong>George Waldir Ventura</strong> conta contigo! 🇦🇴🌙<br><br>' +
+               '💡 <strong>Lembra-te:</strong> Cada dia é uma oportunidade para aprender algo novo.';
+      }
+
+      // Geografia
+      if (t.includes('geografia') || t.includes('mapa') || t.includes('pais') || t.includes('continente') || t.includes('capital') || t.includes('provincia') || t.includes('cidade') || t.includes('fronteira')) {
+        return '🌍 <strong>Geografia — O mundo no mapa!</strong><br><br>' +
+               '<strong>Angola:</strong><br>' +
+               '• 18 províncias<br>' +
+               '• Capital: Luanda<br>' +
+               '• Fronteiras: Namíbia, Zâmbia, Congo, RDC<br>' +
+               '• Costa: Oceano Atlântico (1600 km)<br><br>' +
+               '<strong>África:</strong><br>' +
+               '• 54 países<br>' +
+               '• Maior deserto: Saara<br>' +
+               '• Maior rio: Nilo<br>' +
+               '• Montanha mais alta: Kilimanjaro (5895m)<br><br>' +
+               '<strong>Mundo:</strong><br>' +
+               '• 7 continentes<br>' +
+               '• 195 países<br>' +
+               '• 4 oceanos<br><br>' +
+               '💡 <strong>Queres saber sobre qual país ou continente?</strong>';
+      }
+
+      // Tecnologia
+      if (t.includes('tecnologia') || t.includes('computador') || t.includes('telefone') || t.includes('smartphone') || t.includes('internet') || t.includes('wifi') || t.includes('dados') || t.includes('app') || t.includes('software')) {
+        return '📱 <strong>Tecnologia — O futuro é agora!</strong><br><br>' +
+               '<strong>Computadores:</strong><br>' +
+               '• Hardware: partes físicas (teclado, tela, processador)<br>' +
+               '• Software: programas (Windows, Word, Chrome)<br>' +
+               '• Internet: rede global de computadores<br><br>' +
+               '<strong>Smartphones:</strong><br>' +
+               '• Android (Samsung, Xiaomi, Huawei)<br>' +
+               '• iPhone (Apple)<br>' +
+               '• Apps: WhatsApp, Instagram, TikTok, YouTube<br><br>' +
+               '<strong>Internet em Angola:</strong><br>' +
+               '• Operadoras: Unitel, Africell, Movicel<br>' +
+               '• Dados móveis: pacotes de 1GB, 5GB, 10GB<br>' +
+               '• WiFi: em casa, escolas, cafés<br><br>' +
+               '💡 <strong>Queres aprender sobre quê?</strong>';
+      }
+
+      // Saúde
+      if (t.includes('saude') || t.includes('doenca') || t.includes('sintoma') || t.includes('remedio') || t.includes('hospital') || t.includes('medico') || t.includes('tratamento') || t.includes('prevencao') || t.includes('alimentacao') || t.includes('exercicio')) {
+        return '💚 <strong>Saúde — O teu bem mais importante!</strong><br><br>' +
+               '<strong>Dicas de Saúde:</strong><br>' +
+               '• Bebe água (2-3 litros/dia)<br>' +
+               '• Come frutas e vegetais<br>' +
+               '• Faz exercício (30 min/dia)<br>' +
+               '• Dorme 7-8 horas<br>' +
+               '• Lava as mãos frequentemente<br><br>' +
+               '<strong>Prevenção:</strong><br>' +
+               '• Vacinas em dia<br>' +
+               '• Check-ups regulares<br>' +
+               '• Usa preservativo<br>' +
+               '• Evita álcool e drogas<br><br>' +
+               '<strong>Em Angola:</strong><br>' +
+               '• Posto de saúde mais próximo<br>' +
+               '• Hospital Geral<br>' +
+               '• Clínica privada (se tiveres seguro)<br><br>' +
+               '⚠️ <strong>Importante:</strong> Eu não sou médico. Se estiveres doente, procura um profissional de saúde!';
+      }
+
+      // Resposta padrão inteligente
+      const defaultResponses = [
+        '🤔 <strong>Interessante!</strong> Podes dizer-me mais sobre isso? Estou aqui para ouvir e ajudar.',
+        '💡 <strong>Hum, conta-me mais!</strong> Quero entender melhor o que precisas.',
+        '🇦🇴 <strong>Isso é novo para mim.</strong> Explica melhor?',
+        '🌙 <strong>Estou a aprender ainda.</strong> Podes reformular?',
+        '💬 <strong>Estou aqui para ouvir.</strong> Continua!',
+        '🤖 <strong>Quero ajudar-te!</strong> Escreve mais detalhes sobre o que queres.'
+      ];
+      return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    }
+
+    function ask(text) {
+      if (!text || text.trim() === '') return;
+      
+      addMessage(text, true);
+      
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message gecia-message typing';
+      typingDiv.textContent = 'GecIA está a pensar...';
+      chat.appendChild(typingDiv);
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        chat.removeChild(typingDiv);
+        const response = getResponse(text);
+        if (response && response !== '') {
+          addMessage(response, false);
+        }
+      }, 400 + Math.random() * 300);
+
+      document.getElementById('text').value = '';
+    }
+
+    function sendText() {
+      const text = document.getElementById('text').value;
+      ask(text);
+    }
+  </script>
+</body>
+  </html>
